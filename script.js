@@ -2,7 +2,6 @@ const canvas = document.getElementById('wheel');
 const ctx = canvas.getContext('2d');
 const spinBtn = document.getElementById('spin-btn');
 const resultDiv = document.getElementById('result');
-const animatedTextDiv = document.getElementById('animated-text');
 
 const sections = [
     { text: "Chameleon: Color Change", color: "#FF6B6B" },
@@ -75,27 +74,14 @@ function rgbToHex(r, g, b) {
     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
 
-let animationInterval;
-
-function animateText() {
-    let index = 0;
-    resultDiv.textContent = "Spinning...";
-    
-    animationInterval = setInterval(() => {
-        animatedTextDiv.textContent = sections[index % sections.length].text;
-        index++;
-    }, 100);
-}
-
 function spin() {
     if (isSpinning) return;
 
     isSpinning = true;
     spinBtn.disabled = true;
-    animateText();
     
     const spinDuration = 5000;
-    const spinAngle = Math.random() * 360 + 1080; // More rotations
+    const spinAngle = Math.random() * 360 + 1080;
     let startTime = null;
 
     function animate(timestamp) {
@@ -105,23 +91,42 @@ function spin() {
         if (elapsed < spinDuration) {
             const easeOut = Math.pow(1 - elapsed / spinDuration, 3);
             currentAngle = (spinAngle * (1 - easeOut)) * Math.PI / 180;
-
             drawWheel();
-
             requestAnimationFrame(animate);
         } else {
             isSpinning = false;
             spinBtn.disabled = false;
-            clearInterval(animationInterval);
             
             const selectedSection = Math.floor((360 - ((currentAngle * 180 / Math.PI) % 360)) / (360 / sections.length));
-            resultDiv.textContent = `Selected Ability: ${sections[selectedSection].text}`;
-            animatedTextDiv.textContent = sections[selectedSection].text;
+            showModal(sections[selectedSection].text);
         }
     }
 
     requestAnimationFrame(animate);
 }
+
+// Yeni eklenen modal fonksiyonları
+function showModal(result) {
+    const modal = document.getElementById('result-modal');
+    const resultText = document.getElementById('result');
+    resultText.textContent = result;
+    
+    // Modal'ı göster
+    modal.classList.add('show');
+}
+
+// Modal kapatma işlemi
+document.getElementById('close-modal').addEventListener('click', () => {
+    const modal = document.getElementById('result-modal');
+    modal.classList.remove('show');
+});
+
+// Modal dışına tıklandığında kapatma
+document.getElementById('result-modal').addEventListener('click', (e) => {
+    if (e.target.id === 'result-modal') {
+        e.target.classList.remove('show');
+    }
+});
 
 drawWheel();
 spinBtn.addEventListener('click', spin);

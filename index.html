@@ -2,28 +2,29 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Nature-Themed Introduction Wheel Game<title>
+    <title>Nature-Themed Introduction Wheel Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Nature-Themed Introduction Wheel</h1>
+        <h1>Nature-Themed Introduction Wheel Game</h1>
         
-        <div class="content-wrapper">
-            <div class="wheel-section">
-                <div class="wheel-wrapper">
-                    <div class="pointer"></div>
-                    <canvas id="wheel" width="500" height="500"></canvas>
-                </div>
-                <button id="spin-btn">Spin!</button>
-            </div>
-            
-            <div class="result-section">
-                <div id="result" class="result-text"></div>
-                <div id="animated-text" class="animated-text"></div>
-            </div>
+        <div class="wheel-wrapper">
+            <canvas id="wheel" width="500" height="500"></canvas>
+        </div>
+
+        <button id="spin-btn">SPIN!</button>
+    </div>
+
+    <!-- Yeni eklenen modal -->
+    <div id="result-modal" class="modal">
+        <div class="modal-content">
+            <h2>🎉 Selected Ability 🎉</h2>
+            <div id="result" class="result-text"></div>
+            <button id="close-modal" class="modal-button">OK, Let's Spin Again!</button>
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
